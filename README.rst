@@ -76,11 +76,11 @@ Credits
 
 `aztroJS <https://www.npmjs.com/package/aztro-js>`_ was created by `Srijit S Madhavan <https://srijitcoder.me>`_.
 
-`Aztro API <https://aztro.sameerkumar.website>`_ and `Pyaztro <https://pypi.org/project/pyaztro>`_ was created by `Sameer Kumar <http://www.sameerkumar.website>`_.
+    *  `Aztro API <https://aztro.sameerkumar.website>`_ and `Pyaztro <https://pypi.org/project/pyaztro>`_ was created by `Sameer Kumar <http://www.sameerkumar.website>`_.
 
-Thanks `Sameer Kumar <http://www.sameerkumar.website>`_ for Documentation reference.
+    *  Thanks `Sameer Kumar <http://www.sameerkumar.website>`_ for Documentation reference.
 
-Source of horoscope updates - https://aztro.sameerkumar.website
+    *  Source of horoscope updates - https://aztro.sameerkumar.website
 
 and if I have neglected to mention someone, please let me know.
 
@@ -90,6 +90,7 @@ Please feel free to use and adapt this aztro-js NPM Package.
 
 .. image:: https://readthedocs.org/projects/aztro/badge/?version=latest
     :target: http://aztro.readthedocs.io/en/latest/?badge=latest
- 
- .. image:: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg
+
+
+.. image:: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg
     :target: https://saythanks.io/to/srijitcoder
