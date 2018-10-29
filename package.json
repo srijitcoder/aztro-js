@@ -1,6 +1,6 @@
 {
   "name": "aztro-js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "aztro-js is a npm package for Aztro API written in NodeJS.",
   "main": "aztro-js/aztro.js",
   "scripts": {
@@ -16,8 +16,7 @@
     "aztro.min.js",
     "horoscope",
     "astrology",
-    "aztro-api",
-
+    "aztro-api"
   ],
   "author": "Srijit S Madhavan <sayhi@srijitcoder.me> (https://srijitcoder.me/)",
   "license": "Apache-2.0",
