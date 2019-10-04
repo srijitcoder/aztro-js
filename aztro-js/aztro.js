@@ -24,51 +24,64 @@ aztro.error = [
 	}
 ]
 
-aztro.getHoroscope = function(sign, day, callback, property = 0) {
+aztro.getHoroscope = function(sign, day, property = 0) {
 	let propertyions = {
 		url: `https://aztro.sameerkumar.website/?sign=${sign}&day=${day}`,
 		method: 'POST',
 		json: 'true'
 	}
+	let callback = typeof (property) === 'function' ? property : null
+	if (callback) {
+		property = arguments.length > 3 ? arguments[3] : 0
+	}
 
-	request(propertyions, function (error, response, body) {
-		try {
-			if (!error && response.statusCode == 200) {
-				if(property !== 0) {
-					let res = body[property]
-					if(res === undefined)
-						throw aztro.error[0]
-					else
-						return callback(res)
-				}
-				else
-		    		return callback(body)
-			}	
-			else 
-				throw aztro.error[0]
-		}
-		catch(e) {
-			return callback(e)
-		}
+	const prom = new Promise( (resolve,reject) => {
+        request(propertyions, function (error, response, body) {
+            try {
+                if (!error && response.statusCode == 200) {
+                    if(property !== 0) {
+                        let res = body[property]
+                        if(res === undefined)
+                            reject(aztro.error[0])
+                        else
+                            return resolve(res)
+                    }
+                    else
+                        return resolve(body)
+                }	
+                else 
+                    reject(aztro.error[0])
+            }
+            catch(e) {
+                return reject(e)
+            }
+        })
 	})
+	
+	if(typeof (callback) === 'function') {
+		return prom.then(resp => {
+			callback(null, resp)
+		}).catch(err => {
+			callback(err)
+		})
+	}
+
+	return prom;
 }
 
-aztro.getTodaysHoroscope = function(sign, callback, property) {
-	aztro.getHoroscope(sign, 'today', function(res) {
-		return callback(res)
-	}, property)
+aztro.getTodaysHoroscope = function(sign, property=0) {
+	Array.prototype.splice.apply(arguments, [1, 0, 'today'])
+	return aztro.getHoroscope(...arguments)
 }
 
-aztro.getTomorrowsHoroscope = function(sign, callback, property) {
-	aztro.getHoroscope(sign, 'tomorrow', function(res) {
-		return callback(res)
-	}, property)
+aztro.getTomorrowsHoroscope = function(sign, property=0) {
+	Array.prototype.splice.apply(arguments, [1, 0, 'tomorrow'])
+	return aztro.getHoroscope(...arguments)
 }
 
-aztro.getYesterdaysHoroscope = function(sign, callback, property) {
-	aztro.getHoroscope(sign, 'yesterday', function(res) {
-		return callback(res)
-	}, property)
+aztro.getYesterdaysHoroscope = function(sign, property) {
+	Array.prototype.splice.apply(arguments, [1, 0, 'yesterday'])
+	return aztro.getHoroscope(...arguments)
 }
 
 aztro.getAllHoroscope = function(sign, callback) {
@@ -78,14 +91,19 @@ aztro.getAllHoroscope = function(sign, callback) {
 		tomorrow: new Object
 	}
 
-	aztro.getTodaysHoroscope(sign, function(res) {
+	return aztro.getTodaysHoroscope(sign).then(res => {
 		all.today = res
-		aztro.getYesterdaysHoroscope(sign, function(res) {
-			all.yesterday = res
-			aztro.getTomorrowsHoroscope(sign, function(res) {
-				all.tomorrow = res
-				return callback(all)
-			}, property = 0)
-		}, property = 0)
-	}, property = 0)
+		return aztro.getYesterdaysHoroscope(sign);
+	}).then(res => {
+        all.yesterday = res
+        return aztro.getTomorrowsHoroscope(sign)
+    }).then(res => {
+		all.tomorrow = res
+		
+		if (typeof (callback) === 'function') {
+			callback(null, all)
+		}
+
+        return all;
+    })
 }
